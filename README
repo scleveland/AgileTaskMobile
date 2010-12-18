@@ -1,0 +1,13 @@
+# Agile Task Mobile
+
+This is a rhomobile framework application for the AgileTask webservice - agiletask.me
+
+## Getting Started
+
+1. install the rhodes gem "gem install rhodes"
+2. install all of the sdks you plan on using for android, iphone etc.
+3. run rhodes-setup for you system
+4. create a rhodes application - rhodes app AgileTaskMobile
+5. fetch the AgileTaskMobile git repository 
+6. add your API key for testing in the "Tasks" controller
+7. run the app in an emulator example "rake run:android"
