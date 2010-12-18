@@ -1,0 +1,27 @@
+<div class="pageTitle">
+  <h1>Edit <%= @tasks.name %></h1>
+</div>
+
+<div class="toolbar">
+  <div class="leftItem backButton">
+    <a href="<%= url_for :action => :show, :id => @tasks.object %>">Cancel</a>
+  </div>
+  <div class="rightItem regularButton">
+    <a class="button" href="<%= url_for :action => :delete, :id => @tasks.object %>">Delete</a>
+  </div>
+</div>
+
+<div class="content">
+  <form method="POST" action="<%= url_for :action => :update %>">
+    <input type="hidden" name="id" value="<%= @tasks.object %>"/>
+    <ul>
+      
+          <li>
+            <label for="tasks[name]" class="fieldLabel">Name</label>
+            <input type="text" name="tasks[name]" value="<%= @tasks.name %>" <%= placeholder( "Name" ) %> />
+          </li>
+      
+    </ul>
+    <input type="submit" class="standardButton" value="Update"/>
+  </form>
+</div>

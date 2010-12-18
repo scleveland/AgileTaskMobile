@@ -1,0 +1,29 @@
+<div id="pageTitle">
+	<h1>Home</h1>
+</div>
+
+<div id="toolbar">
+    <% if SyncEngine::logged_in > 0 %>
+	    <%=  link_to "Logout", :action => :logout %>
+	<% else %>
+	    <%=  link_to "Login", :action => :login %>
+	<% end %>
+</div>
+
+<div id="content">
+    <ul id = "list-content">
+    	<li>I CHANGED THIS...</li>
+    </ul>
+</div>
+
+<script type ="text/javascript">
+$(document).ready(function(){
+$.get("https://agiletask.me/tasks.json?api_key=ya8cOCyb1jGRU5VnWCke",
+function(data) {
+  var i = 0;
+  for(i=0;i< data.task.length; i++)
+  {
+    $('#list-content').append("<li>"+data.task[i].name+"</li>")
+  });
+});
+</script>

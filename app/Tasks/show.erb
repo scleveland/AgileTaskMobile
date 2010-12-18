@@ -1,0 +1,21 @@
+
+<div class="pageTitle">
+  <h1>Tasks</h1>
+</div>
+
+<div class="toolbar">
+  <div class="leftItem regularButton">
+    <a href="<%= Rho::RhoConfig.start_path %>">Home</a>
+  </div>
+  <div class="rightItem regularButton">
+    <a class="button" href="<%= url_for :action => :new %>">New</a>
+  </div>
+</div>
+<%tasks = get_tasks() %>
+<div class="content">
+  <ul id = "list-content">
+  	<% tasks.each do |task|%>
+  	  <li><%=task["task"]["name"]%></li>
+  	<% end %>
+  </ul>
+</div>

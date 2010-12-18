@@ -1,0 +1,22 @@
+
+<div class="pageTitle">
+  <h1>Tasks</h1>
+</div>
+
+<div class="toolbar">
+  <div class="leftItem regularButton">
+    <a href="<%= Rho::RhoConfig.start_path %>">Home</a>
+  </div>
+  <div class="rightItem regularButton">
+    <a class="button" href="<%= url_for :action => :new %>">New</a>
+  </div>
+</div>
+<%tasks = get_tasks() %>
+<div class="content">
+  <ul id = "list-content">
+  	<li>I CHANGED THIS...</li>
+  	<% #@icebox_tasks.each do |task|%>
+  	  <li><% tasks %></li>
+  	<% #end %>
+  </ul>
+</div>
