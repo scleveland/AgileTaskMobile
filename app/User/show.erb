@@ -1,0 +1,23 @@
+<div class="pageTitle">
+  <h1><%= @user.api_key %></h1>
+</div>
+
+<div class="toolbar">
+  <div class="leftItem backButton">
+    <a href="<%= url_for :action => :index %>">Back</a>
+  </div>
+  <div class="rightItem regularButton">
+    <a href="<%= url_for :action => :edit, :id => @user.object %>">Edit</a>
+  </div>
+</div>
+
+<div class="content">
+  <ul>
+    
+        <li>
+          <div class="itemLabel">ApiKey</div>
+          <div class="itemValue"><%= @user.api_key %></div>
+        </li>
+    
+  </ul>
+</div>

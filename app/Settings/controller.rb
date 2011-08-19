@@ -64,7 +64,10 @@ class SettingsController < Rho::RhoController
   end
   
   def logout
-    SyncEngine.logout
+    #SyncEngine.logout
+    User.find(:all).each do |user|
+      user.destroy
+    end
     @msg = "You have been logged out."
     render :action => :login
   end

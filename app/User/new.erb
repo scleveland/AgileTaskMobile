@@ -1,5 +1,5 @@
 <div class="pageTitle">
-  <h1>New <%= @tasks.title %></h1>
+  <h1>New <%= @user.title %></h1>
 </div>
 
 <div class="toolbar">
@@ -10,14 +10,13 @@
 
 <div class="content">
   <form method="POST" action="<%= url_for :action => :create %>">
-    <input type="hidden" name="id" value="<%= @tasks.object %>"/>
+    <input type="hidden" name="id" value="<%= @user.object %>"/>
     <ul>
       
           <li>
-            Task Name
-          </li>
-          <li>
-            <input type="textarea" name="task"/>
+            <label for="user[api_key]" class="fieldLabel">Api key</label>
+            <input type="text" name="user[api_key]" <%=
+            placeholder("Api key") %> />
           </li>
       
     </ul>

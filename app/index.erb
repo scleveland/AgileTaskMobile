@@ -1,35 +1,31 @@
 <div class="pageTitle">
   <h1>AgileTask</h1>
 </div>
-
+<% @user = ""%>
+<% User.find(:all).each do |user| %>
+    <% @user = user  %>
+<% end %>
 <div class="toolbar">
-  <% if User.logged_in == true %>
-      <div class="rightItem regularButton">
-        <a href="<%= url_for :controller => :Settings, :action => :logout %>">Logout</a>
-      </div>    
+  <% if !@user.empty? %>
+      <div class="content">
+        <ul>
+          <li>
+            <%= @user.login  %>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="<%= url_for :controller => :Tasks, :action => :today %>">Today's Tasks</a>
+            <a href="<%= url_for :controller => :Tasks, :action => :icebox %>">Icebox Tasks</a>
+          </li>
+        </ul>
+        <a class="button" href="<%= url_for :controller => :Tasks,:action => :new %>">Add New Task</a>
+      </div>
   <% else %>
       <div class="rightItem regularButton">
-        <a href="<%= url_for :controller => :Settings, :action => :login %>">Login</a>
+        <a href="<%= url_for :controller => :Settings, :action => :login %>">Login To AgileTask</a>
       </div>
   <% end %>
 </div>
 
-<div class="content">
-  <ul>
-    <li>
-      <a href="<%= url_for :controller => :Tasks, :action => :today %>">Today's Tasks</a>
-      <a href="<%= url_for :controller => :Tasks, :action => :icebox %>">Icebox Tasks</a>
-    </li>
-  </ul>
-  <ul>
-    <% @user = ""%>
-    <% User.find(:all).each do |user| %>
-        <% @user = user  %>
-    <% end %>
-      <li>
-        <%= @user.login  %>
-        <%= @user.api_key %>
-      </li>
-  </ul>
-  
-</div>
+

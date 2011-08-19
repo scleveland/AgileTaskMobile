@@ -1,0 +1,27 @@
+<div class="pageTitle">
+  <h1>Edit <%= @user.api_key %></h1>
+</div>
+
+<div class="toolbar">
+  <div class="leftItem backButton">
+    <a href="<%= url_for :action => :show, :id => @user.object %>">Cancel</a>
+  </div>
+  <div class="rightItem regularButton">
+    <a class="button" href="<%= url_for :action => :delete, :id => @user.object %>">Delete</a>
+  </div>
+</div>
+
+<div class="content">
+  <form method="POST" action="<%= url_for :action => :update %>">
+    <input type="hidden" name="id" value="<%= @user.object %>"/>
+    <ul>
+      
+          <li>
+            <label for="user[api_key]" class="fieldLabel">Api key</label>
+            <input type="text" name="user[api_key]" value="<%= @user.api_key %>" <%= placeholder( "Api key" ) %> />
+          </li>
+      
+    </ul>
+    <input type="submit" class="standardButton" value="Update"/>
+  </form>
+</div>
