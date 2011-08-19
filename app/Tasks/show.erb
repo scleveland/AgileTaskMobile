@@ -1,6 +1,6 @@
 
 <div class="pageTitle">
-  <h1>Tasks</h1>
+  <h1>@title</h1>
 </div>
 
 <div class="toolbar">
@@ -15,7 +15,33 @@
 <div class="content">
   <ul id = "list-content">
   	<% tasks.each do |task|%>
-  	  <li><%=task["task"]["name"]%></li>
+  	  <li>
+  	    <%=task["task"]["name"]%>
+  	    <div class="leftItem regularButton">
+    	    <form method="POST" action="<%= url_for :action => :completed %>">
+            <input type="hidden" name="id" value="<%= task["task"]["id"] %>"/>
+            <input type="submit" class="button" value="Done"/>
+          </form>
+        </div
+  	    <!--<a href="<%= url_for :controller => :Tasks, :action => :complete %>">Completed</a>-->
+  	    <% if @title == "Today"%>
+  	      <div class="rightItem regularButton">
+    	      <form method="POST" action="<%= url_for :action => :to_icebox %>">
+              <input type="hidden" name="id" value="<%= task["task"]["id"] %>"/>
+              <input type="submit" class="button" value="To Icebox"/>
+            </form>
+           </div>
+          <!--<a href="<%= url_for :controller => :Tasks, :action => :to_ice %>">To Icebox</a>-->
+        <% else %>
+          <div class="rightItem regularButton">
+            <form method="POST" action="<%= url_for :action => :to_today %>">
+              <input type="hidden" name="id" value="<%= task["task"]["id"] %>"/>
+              <input type="submit" class="button" value="To Today"/>
+            </form>
+          </div>
+          <!--<a href="<%= url_for :controller => :Tasks, :action => :to_ice %>">To Today</a>-->
+        <% end %>  
+  	  </li>
   	<% end %>
   </ul>
 </div>

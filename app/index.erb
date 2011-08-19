@@ -3,13 +3,10 @@
 </div>
 
 <div class="toolbar">
-  <% if SyncEngine::logged_in > 0 %>
-      <div class="leftItem blueButton">
-        <a href="<%= url_for :controller => :Settings, :action => :do_sync %>">Sync</a>
-      </div>
+  <% if User.logged_in == true %>
       <div class="rightItem regularButton">
         <a href="<%= url_for :controller => :Settings, :action => :logout %>">Logout</a>
-      </div>
+      </div>    
   <% else %>
       <div class="rightItem regularButton">
         <a href="<%= url_for :controller => :Settings, :action => :login %>">Login</a>
@@ -24,4 +21,15 @@
       <a href="<%= url_for :controller => :Tasks, :action => :icebox %>">Icebox Tasks</a>
     </li>
   </ul>
+  <ul>
+    <% @user = ""%>
+    <% User.find(:all).each do |user| %>
+        <% @user = user  %>
+    <% end %>
+      <li>
+        <%= @user.login  %>
+        <%= @user.api_key %>
+      </li>
+  </ul>
+  
 </div>
