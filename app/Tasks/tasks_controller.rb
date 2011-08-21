@@ -3,35 +3,37 @@ require 'helpers/browser_helper'
 
 class TasksController < Rho::RhoController
   include BrowserHelper
+  
+  @@title = "Icebox"
 
   #GET /Tasks
   def index
-    @user = ""
-    User.find(:all).map{|u| @user = u}
+    @@user = ""
+    User.find(:all).map{|u| @@user = u}
     Rho::AsyncHttp.get(
-                :url =>  "https://agiletask.me/tasks/icebox.json?api_key=#{@user.api_key}",
+                :url =>  "https://agiletask.me/tasks/icebox.json?api_key=#{@@user.api_key}",
                 :callback => (url_for :action => :get_returned_tasks),
                 :callback_param => "")
     render :action => :wait
   end
   
   def today
-    @title = "Today"
-    @user = ""
-    User.find(:all).map{|u| @user = u}
+    @@title = "Today"
+    @@user = ""
+    User.find(:all).map{|u| @@user = u}
     Rho::AsyncHttp.get(
-                :url =>  "https://agiletask.me/tasks/today.json?api_key=#{@user.api_key}",
+                :url =>  "https://agiletask.me/tasks/today.json?api_key=#{@@user.api_key}",
                 :callback => (url_for :action => :get_returned_tasks),
                 :callback_param => "")
     render :action => :wait
   end
   
   def icebox
-    @title = "Icebox"
-    @user = ""
-    User.find(:all).map{|u| @user = u}
+    @@title = "Icebox"
+    @@user = ""
+    User.find(:all).map{|u| @@user = u}
     Rho::AsyncHttp.get(
-                :url =>  "https://agiletask.me/tasks/icebox.json?api_key=#{@user.api_key}",
+                :url =>  "https://agiletask.me/tasks/icebox.json?api_key=#{@@user.api_key}",
                 :callback => (url_for :action => :get_returned_tasks),
                 :callback_param => "")
     render :action => :wait
@@ -48,8 +50,14 @@ class TasksController < Rho::RhoController
             @@error_params = @params
             WebView.navigate ( url_for :action => :show_error )         
     else
-        @@tasks= @params['body']
-        WebView.navigate ( url_for :back => '/app' )
+        if @@title.nil?
+          @@title == "Icebox"
+        end
+        if @@title == "Today"            
+          WebView.navigate ( url_for  :action => :today)
+        else
+          WebView.navigate ( url_for  :action => :icebox)
+        end
     end
   end
   
@@ -75,6 +83,14 @@ class TasksController < Rho::RhoController
 
   def get_tasks
     @@tasks
+  end
+  
+  def get_title
+    @@title
+  end
+    
+  def get_user
+    @@user
   end
 
   def cancel_httpcall
@@ -118,7 +134,11 @@ class TasksController < Rho::RhoController
                 :url =>  "https://agiletask.me/tasks.json?task[name]='#{@params['task']}'&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
-    redirect :action => :index
+    if !@@title.nil? && @@title == "Today"            
+      redirect :action => :today 
+    else
+      redirect :action => :icebox
+    end
   end
 
   # POST /Tasks/{1}/update
@@ -131,37 +151,39 @@ class TasksController < Rho::RhoController
   def to_icebox
     @user = ""
     User.find(:all).map{|u| @user = u}
-    puts "https://agiletask.me/tasks/#{@params['id']}.json?task[icebox]=true&api_key=#{@user.api_key}"
-    Rho::AsyncHttp.post(
+    puts "https://agiletask.me/tasks/#{@params['icebox_task_id']}.json?task[icebox]=true&api_key=#{@user.api_key}"
+    Rho::AsyncHttp.get(
                 :http_command  => 'PUT',
-                :url =>  "https://agiletask.me/tasks/#{@params['id']}.json?task[icebox]=true&api_key=#{@user.api_key}",
+                :headers => {"Content-Length" => 0},
+                :url =>  "https://agiletask.me/tasks/#{@params['icebox_task_id']}.json?task[icebox]=true&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
-    redirect :action => :index
   end
   
   def to_today
     @user = ""
     User.find(:all).map{|u| @user = u}
-    puts "https://agiletask.me/tasks/#{@params['id']}.json?task[icebox]=false&api_key=#{@user.api_key}"
-    Rho::AsyncHttp.post(
+    puts "https://agiletask.me/tasks/#{@params['today_task_id']}.json?task[icebox]=false&api_key=#{@user.api_key}"
+    Rho::AsyncHttp.get(
                 :http_command  => 'PUT',
-                :url =>  "https://agiletask.me/tasks/#{@params['id']}.json?task[icebox]=false&api_key=#{@user.api_key}",
+                :headers => {"Content-Length" => 0},
+                :url =>  "https://agiletask.me/tasks/#{@params['today_task_id']}.json?task[icebox]=false&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
-    redirect :action => :index
   end
   
   def completed
     @user = ""
     User.find(:all).map{|u| @user = u}
-    puts "https://agiletask.me/tasks/#{@params['id']}.json?task[complete]=true&api_key=#{@user.api_key}"
-    Rho::AsyncHttp.post(
+    puts "Params:" 
+    puts @params
+    puts "https://agiletask.me/tasks/#{@params['comp_task_id']}.json?task[complete]=true&api_key=#{@user.api_key}"
+    Rho::AsyncHttp.get(
                 :http_command  => 'PUT',
-                :url =>  "https://agiletask.me/tasks/#{@params['id']}.json?task[complete]=true&api_key=#{@user.api_key}",
+                :headers => {"Content-Length" => 0},
+                :url =>  "https://agiletask.me/tasks/#{@params['comp_task_id']}.json?task[complete]=true&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
-    redirect :action => :index
   end
 
   # POST /Tasks/{1}/delete

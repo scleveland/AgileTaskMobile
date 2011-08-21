@@ -1,7 +1,8 @@
-
+<%title = get_title() %>
 <div class="pageTitle">
-  <h1><%= @title %></h1>
+  <h1><%= title %></h1>
 </div>
+<%user = get_user() %>
 
 <div class="toolbar">
   <div class="regularButton">
@@ -13,38 +14,64 @@
   <ul id = "list-content">
   	<% tasks.each do |task|%>
   	  <li>
-  	    <%=task["task"]["name"]%>
-        <input type="button" class="button" value="Done" onclick="complete(<%= task["task"]["id"] %>);"/>
-  	    <% if @title == "Today"%>
-          <input type="button" class="button" value="To Icebox" onclick="to_icebox(<%= task["task"]["id"] %>);"/>
+  	    <%=task["task"]["name"]%><br>
+    	    <form method="POST" action="<%= url_for :action => :completed %>">
+    	      <input id="comp_task_id" name="comp_task_id" type="hidden" value=<%=task["task"]["id"]%> />
+            <input type="submit" class="standardButton" value="Done" />
+          </form>
+  	    <% if title == "Today"%>
+    	      <form method="POST" action="<%= url_for :action => :to_icebox %>">
+    	        <input id="icebox_task_id" name="icebox_task_id" type="hidden" value=<%=task["task"]["id"]%> />
+              <input type="submit" class="standardButton" value="To Icebox" />
+            </form>
         <% else %>
-          <input type="button" class="button" value="To Today" onclick="to_today(<%= task["task"]["id"] %>);"/>
+            <form method="POST" action="<%= url_for :action => :to_today %>">
+    	        <input id="today_task_id" name="today_task_id" type="hidden" value=<%=task["task"]["id"]%> />
+              <input type="submit" class="standardButton" value="To Today"/>  
+            </form>
         <% end %>  
-  	  </li>
+        <br>
+     </li>
   	<% end %>
   </ul>
 </div>
 
 <script  type="text/javascript">
-  function to_icebox(task_id){
+  function to_icebox(task_id, api_key){
+    //var xmlhttp;
+    //xmlhttp=new XMLHttpRequest();
+    //xmlhttp.open("PUT",'https://agiletask.me/tasks/' + task_id+ '.xml?task[icebox]=true&api_key=' + api_key,true);
+    //xmlhttp.send();
     $.ajax({
-       url: 'https://agiletask.me/tasks/' + task_id.toString + '.json?task[icebox]=true&api_key=#{@user.api_key}',
-       type: 'PUT'
+       url: 'https://agiletask.me/tasks/' + task_id+ '.json?task[icebox]=true&api_key=' + api_key,
+       type: 'PUT',
+       error: function(data){ alert("error:  "+data['status']);},
+       success: function( data ) {
+           window.alert(data);
+         }
     });
-    location.reload();
+    //location.reload();
   }
-  function to_today(task_id){
+  function to_today(task_id, api_key){
     $.ajax({
-       url: 'https://agiletask.me/tasks/' + task_id.toString + '.json?task[icebox]=false&api_key=#{@user.api_key}',
-       type: 'PUT'
+       url: 'https://agiletask.me/tasks/' + task_id + '.json?task[icebox]=false&api_key=' + api_key,
+       type: 'PUT',
+       error: function(data){ alert("error:  "+data['status']);},
+       success: function( data ) {
+            window.alert(data);
+          }
     });
-    location.reload();
+    //location.reload();
   }
-  function complete(task_id){
+  function complete(task_id, api_key){
     $.ajax({
-       url: 'https://agiletask.me/tasks/' + task_id.toString + '.json?task[complete]=true&api_key=#{@user.api_key}',
-       type: 'PUT'
+       url: 'https://agiletask.me/tasks/' + task_id+ '.json?task[complete]=true&api_key=' + api_key,
+       type: 'PUT',
+       error: function(data){ alert("error:  "+data['status']);},
+       success: function( data ) {
+            window.alert(data);
+          }
     });
-    location.reload();
+    //location.reload();
   }
 </script>

@@ -19,7 +19,11 @@
             <a href="<%= url_for :controller => :Tasks, :action => :icebox %>">Icebox Tasks</a>
           </li>
         </ul>
-        <a class="button" href="<%= url_for :controller => :Tasks,:action => :new %>">Add New Task</a>
+        <ul>
+          <li>
+            <a class="button" href="<%= url_for :controller => :Tasks,:action => :new %>">Add New Task</a>
+          </li>
+        </ul>
       </div>
   <% else %>
       <div class="rightItem regularButton">

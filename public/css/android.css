@@ -91,7 +91,7 @@ h1 {
     height: 25px;
     margin: 0;
     width: 100%;
-    display: none;
+    //display: none;
 }
 
 .pageTitle h1 {
@@ -328,3 +328,6 @@ h1 {
 .content ul.settings li.alertMessage span.message {
     color: red;
 }
+
+/* Zombie Style */
+
