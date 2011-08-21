@@ -6,6 +6,7 @@ require 'helpers/browser_helper'
 class SettingsController < Rho::RhoController
   include BrowserHelper
   
+  @@msg = ""
   def index
     @msg = @params['msg']
     render
@@ -13,30 +14,21 @@ class SettingsController < Rho::RhoController
 
   def login
     @msg = @params['msg']
+    if @msg.nil?
+      @msg = @@msg
+    end
     render :action => :login, :back => '/app'
   end
 
   def login_callback
     puts "httpget_callback: #{@params['body']}"
-    # errCode = @params['error_code'].to_i
-    # if errCode == 0
-      # run sync if we were successful
-      #User.find(:all).destroy #remove old api_key
-      #puts @params[:body]
+    if @params['body'].has_key?("api_key")
       user = User.create(:login => @params['body']["login"], :api_key=>@params['body']["api_key"]) #add api_key
-      #WebView.navigate ( url_for :action => :index, :controller => :application )
-      #SyncEngine.dosync
-    # else
-    #   if errCode == Rho::RhoError::ERR_CUSTOMSYNCSERVER
-    #     @msg = @params['error_message']
-    #   end
-    #     
-    #   if !@msg || @msg.length == 0   
-    #     @msg = Rho::RhoError.new(errCode).message
-    #   end
-    #   
-    WebView.navigate('/app')
-    # end  
+      WebView.navigate('/app')
+    else
+      @@msg = "Incorrect User Credentials"
+      WebView.navigate(url_for :action => :login)
+    end  
   end
 
   def do_login

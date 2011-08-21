@@ -27,7 +27,11 @@
       </div>
   <% else %>
       <div class="content">
-        <a href="<%= url_for :controller => :Settings, :action => :login %>">Login To AgileTask</a>
+        <ul>
+          <li>
+            <a href="<%= url_for :controller => :Settings, :action => :login %>">Login To AgileTask</a>
+          </li>
+        </ul>
       </div>
   <% end %>
 </div>
