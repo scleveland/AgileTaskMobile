@@ -43,6 +43,27 @@ class TasksController < Rho::RhoController
       @@error_params
   end
   
+  # download_uncompleted_tasks
+  # This connects to AgileTask and downloads all un-completed tasks
+  #
+  # @author: Sean Cleveland, Nanoqueis Technologies LLC
+  # 
+  def download_uncompleted_tasks
+    # pull Icebox Tasks from AgileTask
+    @@user = ""
+    User.find(:all).map{|u| @@user = u}
+    Rho::AsyncHttp.get(
+                :url =>  "https://agiletask.me/tasks/icebox.json?api_key=#{@@user.api_key}",
+                :callback => (url_for :action => :get_returned_sync_tasks),
+                :callback_param => "")
+    # pull Today TasksAgileTask
+    Rho::AsyncHttp.get(
+                :url =>  "https://agiletask.me/tasks/today.json?api_key=#{@@user.api_key}",
+                :callback => (url_for :action => :get_returned_sync_tasks),
+                :callback_param => "")
+    render  :action => :wait
+  end
+  
   def get_created_task
     puts "httpget_callback: #{@params}"
     if @params['status'] != 'ok'
@@ -73,8 +94,42 @@ class TasksController < Rho::RhoController
     end
   end
   
+  def get_returned_sync_tasks
+    puts "httpget_callback: #{@params}"
+    if @params['status'] != 'ok'
+        http_error = @params['http_error'].to_i if @params['http_error']
+            @@error_params = @params
+            WebView.navigate ( url_for :action => :show_error )         
+    else
+        @@tasks= @params['body']
+        @@tasks.each do |task|
+          if task = Tasks.find(:all, :conditions=>{:id=>task["task"]["id"]})
+            #if task.updated_at == 
+          else
+            Task.create(:id=>task["task"]["id"], 
+                     :name=>task["task"]["name"],
+                     :icebox=>task["task"]["icebox"],
+                     :complete=>task["task"]["complete"], 
+                     :updated_at=>task["task"]["updated_at"],
+                     :created_at=>task["task"]["created_at"], 
+                     :position=>task["task"]["position"],
+                     :on_server=>true)
+          end
+        end
+        WebView.navigate ( url_for :action => :show_sync_results )
+    end
+  end
+  
   def show_result
    render :action => :show, :back => '/app'
+  end
+  
+  def show_sync_results
+    render :action => :show_sync, :back => '/app'
+  end
+
+  def get_sync_tasks
+    Tasks.find(:all)
   end
 
   def show_error
@@ -158,6 +213,7 @@ class TasksController < Rho::RhoController
                 :url =>  "https://agiletask.me/tasks/#{@params['icebox_task_id']}.json?task[icebox]=true&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
+    render :wait
   end
   
   def to_today
@@ -170,6 +226,7 @@ class TasksController < Rho::RhoController
                 :url =>  "https://agiletask.me/tasks/#{@params['today_task_id']}.json?task[icebox]=false&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
+    render :wait
   end
   
   def completed
@@ -184,6 +241,7 @@ class TasksController < Rho::RhoController
                 :url =>  "https://agiletask.me/tasks/#{@params['comp_task_id']}.json?task[complete]=true&api_key=#{@user.api_key}",
                 :callback => (url_for :action => :get_created_task),
                 :callback_param => "")
+    render :wait
   end
 
   # POST /Tasks/{1}/delete

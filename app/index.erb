@@ -1,39 +1,26 @@
-<div class="pageTitle">
-  <h1>AgileTask</h1>
-</div>
-<% @user = ""%>
-<% User.find(:all).each do |user| %>
-    <% @user = user  %>
-<% end %>
-<div class="toolbar">
-  <% if !@user.empty? %>
-      <div class="content">
-        <ul>
-          <li>
-            <%= @user.login  %>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <a href="<%= url_for :controller => :Tasks, :action => :today %>">Today's Tasks</a>
-            <a href="<%= url_for :controller => :Tasks, :action => :icebox %>">Icebox Tasks</a>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <a class="button" href="<%= url_for :controller => :Tasks,:action => :new %>">Add New Task</a>
-          </li>
-        </ul>
+<div data-role="page" data-theme="b">
+  <div data-role="header"  data-backbtn="false">
+    <h1>AgileTask</h1>
+  </div>
+    <% @user = ""%>
+    <% User.find(:all).each do |user| %>
+      <% @user = user  %>
+    <% end %>
+    <% if !@user.empty? %>
+      <div data-role="content">
+        <div>
+          <%= @user.login  %>
+        </div>
+        <a  data-role="button" data-theme="e" href="<%= url_for :controller => :Tasks, :action => :today %>">Today's Tasks</a>
+        <a data-role="button" href="<%= url_for :controller => :Tasks, :action => :icebox %>">Icebox Tasks</a>
+        <a data-role="button" data-icon="plus" href="<%= url_for :controller => :Tasks,:action => :new %>"> New Task</a>
+        <!--<a href="<%= url_for :controller => :Tasks, :action => :download_uncompleted_tasks %>">Sync Tasks</a> -->
       </div>
-  <% else %>
+    <% else %>
       <div class="content">
-        <ul>
-          <li>
-            <a href="<%= url_for :controller => :Settings, :action => :login %>">Login To AgileTask</a>
-          </li>
-        </ul>
+        <a data-role="button" href="<%= url_for :controller => :Settings, :action => :login %>">Login To AgileTask</a>
+        <img src="/public/images/setting.png" />
       </div>
-  <% end %>
-</div>
-
+    <% end %>
+</div><!-- /page -->
 

@@ -1,28 +1,17 @@
-<div class="pageTitle">
-  <h1>New <%= @tasks.title %></h1>
-</div>
+<div data-role="page" data-theme="b">
+  <div data-role="header" data-position="inline">
+    <h1>New <%= @tasks.title %></h1>
+    <a data-role="button" data-icon="delete" href="<%= url_for :action => :index %>">Cancel</a>
+  </div>
 
-<div class="toolbar">
-  <ul>
-    <li>
-      <a class="cancel" href="<%= url_for :action => :index %>">Cancel</a>
-    </li>
-  </ul>
-</div>
-
-<div class="content">
-  <form method="POST" action="<%= url_for :action => :create %>">
-    <input type="hidden" name="id" value="<%= @tasks.object %>"/>
-    <ul>
-      
-          <li>
-            Task Name
-          </li>
-          <li>
-            <input type="textarea" name="task"/>
-          </li>
-      
-    </ul>
-    <input type="submit" class="standardButton" value="Create"/>
-  </form>
+  <div data-role="content">
+    <form method="POST" action="<%= url_for :action => :create %>">
+      <input type="hidden" name="id" value="<%= @tasks.object %>"/>
+      <div data-role="fieldcontain">
+          <label for="name">Task Name:</label>
+          <textarea cols="40" rows="8" name="task" id="task"></textarea>
+      </div>
+      <input type="submit" data-role="button" value="Create Task"/>
+    </form>
+  </div>
 </div>

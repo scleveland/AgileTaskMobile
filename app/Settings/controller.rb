@@ -32,27 +32,11 @@ class SettingsController < Rho::RhoController
   end
 
   def do_login
-    # if @params['login'] and @params['password']
-    #   begin
-        Rho::AsyncHttp.get(
+    Rho::AsyncHttp.get(
                     :url =>  "https://agiletask.me/users/api_key.json?login=#{@params['login']}&password=#{@params['password']}",
                     :callback => (url_for :action => :login_callback ),
                     :callback_param => "")
-        # Rho::AsyncHttp.get(
-        #             :url => "https://agiletask.me/users/api_key.json?login=#{@params['login']}&password=#{@params['password']}", 
-        #             :callback => (url_for :action => :login_callback),
-        #             :callback_param => "")
-        # render :action => :wait
-        # SyncEngine.login(@params['login'], @params['password'], (url_for :action => :login_callback) )
-        # render :action => :wait
-    #   rescue Rho::RhoError => e
-    #     @msg = e.message
-    #     render :action => :login
-    #   end
-    # else
-    #   @msg = Rho::RhoError.err_message(Rho::RhoError::ERR_UNATHORIZED) unless @msg && @msg.length > 0
-    #   render :action => :login
-    # end
+    render :action => :wait
   end
   
   def logout

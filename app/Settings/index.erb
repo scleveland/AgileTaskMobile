@@ -1,29 +1,26 @@
-<div class="pageTitle">
-  <h1>Settings</h1>
-</div>
-
-<div class="content">
-  <ul>
+<div data-role="page" data-theme="b">
+  <div data-role="header">
+    <h1>Settings</h1>
+  </div>
+  <div data-role="content">
     <% if @msg %>
-        <li style="color: red; text-align: center"><%= @msg %></li>
+        <div style="color: red; text-align: center"><%= @msg %></div>
     <% end %>
     <% @user = ""%>
     <% User.find(:all).each do |user| %>
         <% @user = user  %>
     <% end %>
     <% if !@user.empty? %>
-     <li>
-        <div class="itemLabel">
-          <span class="title">User Login: </span>
-        </div>
-        <div class="itemValue">
-          <span class="clientID"><%= @user.login %></span>
-        </div>
-      </li>
-      <li><a href="<%= url_for :action => :logout %>">Logout</a></li>
+      <div class="itemLabel">
+        <span class="title">User Login: </span>
+      </div>
+      <div class="itemValue">
+        <span class="clientID"><%= @user.login %></span>
+      </div>
+      <a data-role= "button" href="<%= url_for :action => :logout %>">Logout</a>
     <% else %>
-        <li><a href="<%= url_for :action => :login %>">Login</a></li>
+      <a data-role="button" href="<%= url_for :action => :login %>">Login</a>
     <% end %>
-  </ul>
-  <img src="/public/images/setting.png" />
+    <img src="/public/images/setting.png" />
+  </div>
 </div>
