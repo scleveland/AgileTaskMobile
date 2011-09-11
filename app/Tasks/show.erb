@@ -19,17 +19,14 @@
       	  <div data-role="collapsible" data-collapsed="true">
       	    <h3><%=task["task"]["name"]%></h3>
       	    <p>
-        	    <form method="POST" action="<%= url_for :action => :completed %>">
-        	      <input id="comp_task_id" name="comp_task_id" type="hidden" value=<%=task["task"]["id"]%> />
-                <input type="submit" data-icon="delete" data-role="button" value="Done" />
-              </form>
+      	      <a data-role="button" href="<%= url_for :action => :check_done, :query=>{:id=>task["task"]["id"]} %>" data-rel="dialog">Completed</a>
         	    <% if title == "Today"%>
-          	      <form method="POST" action="<%= url_for :action => :to_icebox %>">
+          	      <form data-ajax="false" method="POST" action="<%= url_for :action => :to_icebox %>">
           	        <input id="icebox_task_id" name="icebox_task_id" type="hidden" value=<%=task["task"]["id"]%> />
                     <input type="submit" data-icon="forward" data-role="button" value="To Icebox" />
                   </form>
               <% else %>
-                  <form method="POST" action="<%= url_for :action => :to_today %>">
+                  <form data-ajax="false" method="POST" action="<%= url_for :action => :to_today %>">
           	        <input id="today_task_id" name="today_task_id" type="hidden" value=<%=task["task"]["id"]%> />
                     <input type="submit" data-icon="forward" data-role="button" value="To Today"/>  
                   </form>

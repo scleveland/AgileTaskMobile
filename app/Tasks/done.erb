@@ -1,0 +1,13 @@
+<div data-role="page" data-theme='a'>
+  <div data-role="header" data-theme="d"> 
+		<h1>Are You Sure?</h1> 
+ </div> 
+  <div data-role ="content">
+    <%task_id = get_task_id() %>
+    <form data-ajax="false" method="POST" action="<%= url_for :action => :completed %>">
+      <input id="comp_task_id" name="comp_task_id" type="hidden" value=<%=task_id%> />
+      <input type="submit" data-role="button" data-theme='b' value="Yes This Task Is Finished!" />
+      <a href=# data-role="button" data-rel="back" data-theme="c">Not Really.. Just Kidding</a>  
+    </form>
+  </div>
+</div>

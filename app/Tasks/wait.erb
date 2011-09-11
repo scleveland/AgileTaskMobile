@@ -1,4 +1,4 @@
-<div data-role="page" data-theme="a">
+<div data-role="page" data-theme="b">
   <div data-role="header">
   	<h1 id="pageTitle">
   		Loading Tasks - Please wait...
@@ -6,6 +6,9 @@
   </div>
   <div data-role="content">
      <a data-role="button" data-icon="delete" href="<%= url_for :controller => :Tasks, :action => :cancel_httpcall%>">Cancel</a>
-    <img src="/public/images/setting.png" width="80%"/>
+  </div>
+  <div align="center">
+     <img src="/public/images/nqlogo.png"  width=auto/>
+     <img src="/public/images/agiletasklogo.png" width=auto/>
   </div>
 </div>

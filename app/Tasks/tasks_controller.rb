@@ -140,12 +140,20 @@ class TasksController < Rho::RhoController
     @@tasks
   end
   
+  def get_task_id
+   @@task_id
+  end
   def get_title
     @@title
   end
     
   def get_user
     @@user
+  end
+  
+  def check_done
+    @@task_id = @params['id']
+    render :action => :done
   end
 
   def cancel_httpcall

@@ -1,11 +1,10 @@
 <div data-role="page" data-theme="b">
   <div data-role="header" data-position="inline">
     <h1>New <%= @tasks.title %></h1>
-    <a data-role="button" data-icon="delete" href="<%= url_for :action => :index %>">Cancel</a>
   </div>
 
   <div data-role="content">
-    <form method="POST" action="<%= url_for :action => :create %>">
+    <form data-ajax="false" method="POST" action="<%= url_for :action => :create %>">
       <input type="hidden" name="id" value="<%= @tasks.object %>"/>
       <div data-role="fieldcontain">
           <label for="name">Task Name:</label>
