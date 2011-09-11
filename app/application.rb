@@ -6,7 +6,13 @@ class AppApplication < Rho::RhoApplication
     # Super must be called *after* settings @tabs!
     @tabs = nil
     @@tabbar = nil
-
+    @@toolbar = nil
+    @default_menu = {
+      "Home" => :home, 
+      "Refresh" => :refresh, 
+      "Options" => :options, 
+      "View Log" => :log 
+    }
     super
 
     # Uncomment to set sync notification callback to /app/Settings/sync_notify.
